@@ -1,0 +1,485 @@
+HTML
+
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="Controlador" method="post">
+            Nome:<input type="text" name="txtNome"><br/>
+            Idade:<input type="text" name="txtIdade"/>
+            <input type="submit" name="b1" value="Ler" />
+            <input type="submit" name="b1" value="Ler1" />
+            <input type="submit" name="b1" value="IG" />
+            <input type="submit" name="b1" value="Listar" />
+        </form>
+    </body>
+</html>
+
+----------------------------------------------------------------------
+CONTROLLER 
+Controlador
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+package controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+/**
+ *
+ * @author aluno
+ */
+@WebServlet(name = "Controlador", urlPatterns = {"/Controlador"})
+public class Controlador extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        String botao=request.getParameter("b1").trim().toLowerCase();
+        
+        try {
+            if(botao.equalsIgnoreCase("ler")){
+                request.getRequestDispatcher("Ler").forward(request, response);
+            }
+            if(botao.equalsIgnoreCase("ler1")){
+                request.getRequestDispatcher("Ler2").forward(request, response);
+            }
+            if(botao.equalsIgnoreCase("ig")){
+                response.sendRedirect("https://www.ig.com.br");
+            }
+            if(botao.equalsIgnoreCase("listar")){
+               request.getRequestDispatcher("").forward(request, response);
+            }
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Controlador</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Controlador at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        } 
+        catch (Exception ex){
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Controlador</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Erro:  " + ex.getMessage() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}
+
+-----------------------------------------------------------------------------------------------
+Model
+Lista
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author aluno
+ */
+public class Lista {
+    //atributo static é criado junto com o carregamento do projeto
+    public static ArrayList<Pessoa> itens;
+   static{
+       itens= new ArrayList<>();
+   }
+}
+---------------------
+
+Pessoa
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+/**
+ *
+ * @author aluno
+ */
+public class Pessoa {
+    private String nome;
+    private int idade;
+    //O/** é javadoc, utilizando para gerar documentação do projeto
+    /**
+     * Construtor da classe Pessoa
+     * Inicializa os atributos
+     */
+   
+    public Pessoa(){
+        this.nome="Mariah";
+        this.idade=17;
+    }
+   
+   
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) throws Exception {
+        if(nome.length() >=2)
+            this.nome = nome;
+        else
+            throw new Exception ("Nome mt pequeno");//dispara uma exceção
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public void setIdade(int idade) throws Exception {
+        if(idade>0)
+             this.idade = idade;
+        else
+            throw new Exception ("Idade invalida");
+     
+    }
+   
+    public void setIdade(String i) throws  Exception{
+        this.setIdade(Integer.parseInt(i));
+    }
+}
+
+------------------------------------------------------------------------------------
+
+View
+Ler
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+package view;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.Lista;
+import model.Pessoa;
+
+/**
+ *
+ * @author aluno
+ */
+@WebServlet(name = "Ler", urlPatterns = {"/Ler"})
+public class Ler extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        Pessoa obj; //declarando objeto da classe pessoa
+        String aux;
+       
+        try {
+            obj = new Pessoa();
+            aux=request.getParameter("txtNome");
+            obj.setNome(aux);
+            aux=request.getParameter("txtIdade");
+            obj.setIdade(aux);
+            Lista.itens.add(obj);
+           
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Ler</title>");
+            out.println("</head>");
+            out.println("<body>");
+           
+            for(Pessoa obj1: Lista.itens){
+                out.println("<h1>Nome: "+ obj1.getNome());
+                out.println("<h1>Idade: "+ obj1.getIdade() +"</h1>");
+            }
+            out.println("<h1>Nome " +obj.getNome() + "</h1>");
+            out.println("<h1>Idade " +obj.getIdade() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+         catch (Exception ex) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Ler</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Ler at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+    }
+    }
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+}
+
+----------------
+Ler2
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+package view;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import model.Lista;
+import model.Pessoa;
+
+/**
+ *
+ * @author aluno
+ */
+@WebServlet(name = "Ler2", urlPatterns = {"/Ler2"})
+public class Ler2 extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        Pessoa obj; //declarando objeto da classe Pessoa
+        String aux;
+        HttpSession sessao;
+        ArrayList<Pessoa> lista;
+       
+        try{
+            sessao= request.getSession(true);//peega ou cria a seçao
+            lista=(ArrayList<Pessoa>) sessao.getAttribute("Lista");
+            if(lista==null){
+                lista= new ArrayList<>();//instanciar torna funcional, aloca espaço de memoria
+            }
+            obj = new Pessoa(); //instanciar objeto (tornar objeto funcional, com memoria
+            aux=request.getParameter("txtNome");
+            obj.setNome(aux);
+            aux=request.getParameter("txtIdade");
+            obj.setIdade(aux);
+           
+            lista.add(obj);
+            sessao.setAttribute("lista", lista); //atualiza a seção
+   
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Ler</title>");
+            out.println("</head>");
+            out.println("<body>");
+           
+            for(Pessoa obj1: lista){
+                  out.println("<h1>Nome: " + obj1.getNome());
+                  out.println("<h1>Idade: " + obj1.getIdade());
+            }
+            /*
+            for(int i=0;i< lista.itens.size():i++{
+            out.println("<h1>Name:" + lista.get(1) +  getNome())"</h1>");
+            out.println("<h1>Idade:" + Lista.get(1) + getIdade())"</h1>");
+            }
+            */
+            out.println("</body>");
+            out.println("</html>");
+        }
+          catch(Exception ex){
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Ler</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Ler at " + ex.getMessage() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+               
+            }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}
